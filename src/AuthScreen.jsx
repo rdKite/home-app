@@ -22,7 +22,7 @@ export default function AuthScreen({ onLogin }) {
     };
 
     return (
-        <div className="max-w-sm mx-auto p-6 shadow rounded-xl">
+        <div className="max-w-sm mx-auto p-6 shadow rounded-xl text-white">
             <h1 className="text-xl font-bold mb-4">
                 {isRegister ? "Registrieren" : "Login"}
             </h1>
@@ -52,14 +52,14 @@ export default function AuthScreen({ onLogin }) {
                 />
                 <button
                     type="submit"
-                    className="w-full py-2 bg-blue-600 text-white rounded"
+                    className="w-full py-2 bg-violet-600 text-white rounded"
                 >
                     {isRegister ? "Registrieren" : "Login"}
                 </button>
             </form>
             <p
                 onClick={() => setIsRegister(!isRegister)}
-                className="mt-3 text-sm text-blue-600 cursor-pointer"
+                className="mt-3 text-sm text-violet-600 cursor-pointer"
             >
                 {isRegister
                     ? "Schon einen Account? Hier einloggen."

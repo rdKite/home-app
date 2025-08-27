@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { databases } from "./appwrite";
 import TaskListDropdown from "./TaskListDropdown";
 import TodoDialog from "./TodoDialog";
@@ -9,7 +10,7 @@ const DATABASE_ID = import.meta.env.VITE_DATABASE_ID;
 const COLLECTION_ID_TASKS = import.meta.env.VITE_COLLECTION_ID_TASKS;
 const COLLECTION_ID_LISTS = import.meta.env.VITE_COLLECTION_ID_TASK_LISTS;
 
-export default function TodoApp() {
+export default function TodoApp({ listId }) {
     const [todos, setTodos] = useState([]);
     const [taskLists, setTaskLists] = useState([]);
     const [selectedList, setSelectedList] = useState("");
@@ -17,12 +18,21 @@ export default function TodoApp() {
     const [repeatInterval, setRepeatInterval] = useState("");
     const [editingTodo, setEditingTodo] = useState(null);
     const dialogRef = useRef(null);
+    const navigate = useNavigate();
 
     const loadTaskLists = async () => {
         const response = await databases.listDocuments(DATABASE_ID, COLLECTION_ID_LISTS);
         setTaskLists(response.documents);
-        if (response.documents.length > 0 && !selectedList) {
-            setSelectedList(response.documents[0].$id);
+
+        if (response.documents.length > 0) {
+            // If listId is provided and exists in taskLists, use it
+            if (listId && response.documents.some(list => list.$id === listId)) {
+                setSelectedList(listId);
+            } 
+            // Otherwise, if no list is selected, use the first one
+            else if (!selectedList) {
+                setSelectedList(response.documents[0].$id);
+            }
         }
     };
 
@@ -44,7 +54,13 @@ export default function TodoApp() {
         setTodos(sorted);
     };
 
-    useEffect(() => { loadTaskLists(); }, []);
+    // Handle list selection change
+    const handleListChange = (newListId) => {
+        setSelectedList(newListId);
+        navigate(`/tasks/${newListId}`);
+    };
+
+    useEffect(() => { loadTaskLists(); }, [listId]);
     useEffect(() => { loadTodos(); }, [selectedList]);
 
     const closeDialog = () => dialogRef.current?.close();
@@ -122,7 +138,7 @@ export default function TodoApp() {
     return (
         <div className="p-6 max-w-lg mx-auto">
             <h1 className="text-2xl font-bold mb-6 text-white">Listen</h1>
-            <TaskListDropdown taskLists={taskLists} selectedList={selectedList} onChange={setSelectedList} onNew={openNewDialog} />
+            <TaskListDropdown taskLists={taskLists} selectedList={selectedList} onChange={handleListChange} onNew={openNewDialog} />
             <TodoDialog
                 dialogRef={dialogRef}
                 newTodo={newTodo}
