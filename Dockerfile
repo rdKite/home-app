@@ -1,9 +1,13 @@
 # 1. Build Stage
 FROM node:18-alpine AS build
 WORKDIR /app
-COPY package*.json ./
+
+# package.json zuerst kopieren (aus frontend)
+COPY frontend/package*.json ./
 RUN npm install
-COPY . .
+
+# restliche App kopieren
+COPY frontend/ ./
 RUN npm run build
 
 # 2. Serve Stage
@@ -11,10 +15,10 @@ FROM nginx:alpine
 WORKDIR /usr/share/nginx/html
 RUN rm -rf ./*
 
-# hier kopieren wir das gebaute Vite-Output nach nginx
+# gebaute Dateien ins Nginx-Verzeichnis kopieren
 COPY --from=build /app/dist .
 
-# hier kommt die nginx.conf rein (liegt im Projektordner neben Dockerfile)
+# nginx.conf kopieren (liegt im Projekt-Root)
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
