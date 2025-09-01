@@ -1,19 +1,29 @@
 import { useState } from "react";
 import { account } from "./appwrite";
+import { ID } from "appwrite";
 
 export default function AuthScreen({ onLogin }) {
-    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [name, setName] = useState("");
     const [isRegister, setIsRegister] = useState(false);
 
+    // Hilfsfunktion: baut aus Name eine Fake-Mail
+    const getFakeEmail = (name) => `${name.toLowerCase()}@local.app`;
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
+            const fakeEmail = getFakeEmail(name);
+
             if (isRegister) {
-                await account.create("unique()", email, password, name);
+                // neuen User anlegen
+                await account.create(ID.unique(), fakeEmail, password, name);
             }
-            await account.createEmailPasswordSession(email, password);
+
+            // Session mit Name+Passwort starten (über Fake-Mail)
+            await account.createEmailPasswordSession(fakeEmail, password);
+
+            // eingeloggten User holen
             const user = await account.get();
             onLogin(user);
         } catch (err) {
@@ -27,21 +37,12 @@ export default function AuthScreen({ onLogin }) {
                 {isRegister ? "Registrieren" : "Login"}
             </h1>
             <form onSubmit={handleSubmit} className="space-y-3">
-                {isRegister && (
-                    <input
-                        type="text"
-                        placeholder="Name"
-                        className="w-full border px-3 py-2 rounded"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                    />
-                )}
                 <input
-                    type="email"
-                    placeholder="E-Mail"
+                    type="text"
+                    placeholder="Name"
                     className="w-full border px-3 py-2 rounded"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                 />
                 <input
                     type="password"
