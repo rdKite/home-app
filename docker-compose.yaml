@@ -1,9 +1,36 @@
 version: "3.9"
 
 services:
+  proxy:
+    build: ./ha-proxy
+    env_file: .env
+    ports:
+      - "4000:4000"
+    restart: unless-stopped
+    networks:
+      - ha_net
+
   web:
     build: .
     container_name: home-app
     ports:
       - "80:80"   # Host-Port:Container-Port (hier 8080 -> 80)
     restart: unless-stopped
+    networks:
+      - ha_net
+
+  pocketbase:
+    build: ./pocketbase
+    container_name: pocketbase
+    ports:
+      - "8090:8090"
+    volumes:
+      - ./pocketbase/pb_data:/pb_data
+      - ./pocketbase/pb_public:/pb_public
+    restart: unless-stopped
+    networks:
+      - ha_net
+
+networks:
+  ha_net:
+    driver: bridge
