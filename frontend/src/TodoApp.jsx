@@ -1,14 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { databases } from "./appwrite";
+import { databases, Query } from "./pocketbase";
 import TaskListDropdown from "./TaskListDropdown";
 import TodoDialog from "./TodoDialog";
 import TodoItem from "./TodoItem";
-import { Query } from "appwrite";
 
-const DATABASE_ID = import.meta.env.VITE_DATABASE_ID;
-const COLLECTION_ID_TASKS = import.meta.env.VITE_COLLECTION_ID_TASKS;
-const COLLECTION_ID_LISTS = import.meta.env.VITE_COLLECTION_ID_TASK_LISTS;
+const DATABASE_ID = 'pb_database';
+const COLLECTION_ID_TASKS = 'tasks';
+const COLLECTION_ID_LISTS = 'task_lists';
 
 export default function TodoApp({ listId }) {
     const [todos, setTodos] = useState([]);
@@ -41,7 +40,7 @@ export default function TodoApp({ listId }) {
         const response = await databases.listDocuments(
             DATABASE_ID,
             COLLECTION_ID_TASKS,
-            [Query.equal("taskLists", selectedList)]
+            [Query.equal("taskList", selectedList)]
         );
 
         const now = new Date();
@@ -91,10 +90,10 @@ export default function TodoApp({ listId }) {
                 dueAt: repeatInterval ? dueAt.toISOString() : null,
             });
         } else {
-            await databases.createDocument(DATABASE_ID, COLLECTION_ID_TASKS, "unique()", {
+            await databases.createDocument(DATABASE_ID, COLLECTION_ID_TASKS, "", {
                 text: newTodo,
                 done: false,
-                taskLists: selectedList,
+                taskList: selectedList,
                 repeatInterval: repeatInterval ? parseInt(repeatInterval, 10) : null,
                 dueAt: repeatInterval ? dueAt.toISOString() : null,
             });

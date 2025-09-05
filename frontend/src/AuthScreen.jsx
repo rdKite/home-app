@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { account } from "./appwrite";
-import { ID } from "appwrite";
+import { account } from "./pocketbase";
 
 export default function AuthScreen({ onLogin }) {
     const [password, setPassword] = useState("");
@@ -17,7 +16,7 @@ export default function AuthScreen({ onLogin }) {
 
             if (isRegister) {
                 // neuen User anlegen
-                await account.create(ID.unique(), fakeEmail, password, name);
+                await account.create("", fakeEmail, password, name);
             }
 
             // Session mit Name+Passwort starten (über Fake-Mail)

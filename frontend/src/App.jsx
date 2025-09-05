@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Routes, Route, Navigate, useNavigate, useParams } from "react-router-dom";
-import { account } from "./appwrite";
+
+import { account } from "./pocketbase";
 import AuthScreen from "./AuthScreen";
 import TodoApp from "./TodoApp";
 
@@ -32,16 +33,14 @@ function App() {
 
     return (
         <Routes>
-            <Route path="/" element={user ? <Navigate to="/tasks" /> : <Navigate to="/login" />} />
+            <Route path="/" element={<Navigate to="/tasks" />} />
             <Route 
                 path="/login" 
                 element={user ? <Navigate to="/tasks" /> : <AuthScreen onLogin={handleLogin} />} 
             />
-            <Route path="/tasks" element={user ? <TodoApp user={user} /> : <Navigate to="/login" />} />
-            <Route 
-                path="/tasks/:listId" 
-                element={user ? <TaskListRoute user={user} /> : <Navigate to="/login" />} 
-            />
+            {/* Allow access to tasks without requiring login */}
+            <Route path="/tasks" element={<TodoApp user={user} />} />
+            <Route path="/tasks/:listId" element={<TaskListRoute user={user} />} />
         </Routes>
     );
 }
