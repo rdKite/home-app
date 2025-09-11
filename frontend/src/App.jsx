@@ -4,6 +4,7 @@ import { Routes, Route, Navigate, useNavigate, useParams } from "react-router-do
 import { account } from "./pocketbase";
 import AuthScreen from "./AuthScreen";
 import TodoApp from "./TodoApp";
+import Home from "./Home.jsx";
 
 function App() {
     const [user, setUser] = useState(null);
@@ -41,6 +42,8 @@ function App() {
             {/* Allow access to tasks without requiring login */}
             <Route path="/tasks" element={<TodoApp user={user} />} />
             <Route path="/tasks/:listId" element={<TaskListRoute user={user} />} />
+
+            <Route path="/home" element={<Home user={user} />} />
         </Routes>
     );
 }

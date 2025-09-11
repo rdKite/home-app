@@ -1,6 +1,8 @@
 import express from "express";
 import { createProxyMiddleware } from "http-proxy-middleware";
 import dotenv from "dotenv";
+import cors from "cors";
+
 dotenv.config();
 
 const app = express();
@@ -13,6 +15,14 @@ if (!target || !token) {
     process.exit(1);
 }
 
+// CORS erlauben
+app.use(cors({
+    origin: "*",  // oder deine echte Domain
+    methods: ["GET", "POST", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+}));
+
+// Proxy für Home Assistant
 app.use(
     "/ha",
     createProxyMiddleware({
