@@ -33,7 +33,7 @@ const App = () => {
   // Handle login
   const handleLogin = (userData) => {
     setUser(userData);
-    navigate("/tasks");
+    navigate("/home");
   };
 
   // Show loading state
@@ -50,7 +50,7 @@ const App = () => {
 
   return (
     <Routes>
-      <Route path="/" element={<Navigate to="/tasks" />} />
+      <Route path="/" element={<Navigate to="/home" />} />
       <Route 
         path="/login" 
         element={user ? <Navigate to="/tasks" /> : <AuthScreen onLogin={handleLogin} />} 
