@@ -75,13 +75,13 @@ const TodoDialog = ({
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded"
+              className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded cursor-pointer"
             >
               Abbrechen
             </button>
             <button
               type="submit"
-              className="px-4 py-2 bg-blue-700 hover:bg-blue-600 rounded"
+              className="px-4 py-2 bg-violet-700 hover:bg-violet-600 rounded cursor-pointer"
             >
               Speichern
             </button>
