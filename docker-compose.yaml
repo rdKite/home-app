@@ -14,7 +14,7 @@ services:
     build: .
     container_name: home-app
     ports:
-      - "80:80"   # Host-Port:Container-Port (hier 8080 -> 80)
+      - "80:80"
     restart: unless-stopped
     networks:
       - ha_net
@@ -31,6 +31,26 @@ services:
     restart: unless-stopped
     networks:
       - ha_net
+
+  pihole:
+    image: pihole/pihole:latest
+    container_name: pihole
+    hostname: pihole
+    restart: unless-stopped
+    networks:
+      - ha_net
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "8081:80/tcp"
+    environment:
+      TZ: "Europe/Berlin"
+      WEBPASSWORD: "admin"
+    volumes:
+      - ./pihole/etc-pihole:/etc/pihole
+      - ./pihole/etc-dnsmasq.d:/etc/dnsmasq.d
+    cap_add:
+      - NET_ADMIN
 
 networks:
   ha_net:
