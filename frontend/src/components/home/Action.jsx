@@ -8,7 +8,7 @@ import useSwitchState from '../../hooks/useSwitchState';
  * Action component for displaying interactive elements like switches
  */
 const Action = ({ actionData, aptData }) => {
-  const { switchState, toggleSwitch } = useSwitchState(actionData.data.state);
+  const { switchState, toggleSwitch } = useSwitchState(actionData.data.domain, actionData.data.type, actionData.data.state);
   
   // Map of icon components
   const icons = {

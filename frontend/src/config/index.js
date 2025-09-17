@@ -197,6 +197,8 @@ export const HOME_CONFIG = {
         y: 600,
       },
       data: {
+        domain: "light",
+        type: "area",
         state: "light.wohnzimmer",
       }
     },
@@ -209,6 +211,8 @@ export const HOME_CONFIG = {
         y: 250,
       },
       data: {
+        domain: "switch",
+        type: "entity",
         state: "switch.innr_steckdose_02_schalter",
       }
     },
@@ -221,6 +225,8 @@ export const HOME_CONFIG = {
         y: 650,
       },
       data: {
+        domain: "switch",
+        type: "entity",
         state: "switch.wiz_socket_73054a",
       }
     },
@@ -233,8 +239,24 @@ export const HOME_CONFIG = {
         y: 650,
       },
       data: {
-        state: "switch.wiz_socket_73054a",
+        domain: "switch",
+        type: "entity",
+        state: "switch.innr_steckdose_01_schalter",
         link: 'http://192.168.178.69/'
+      }
+    },
+    {
+      name: "Lichtschalter Schlafzimmer",
+      type: "switch",
+      icon: "lightbulb",
+      position: {
+        x: 140,
+        y: 430,
+      },
+      data: {
+        domain: "light",
+        type: "area",
+        state: "light.schlafzimmer",
       }
     },
   ]

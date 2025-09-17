@@ -37,35 +37,39 @@ class HomeAssistantService {
   }
 
   /**
-   * Toggle a switch
-   * @param {string} entityId - The ID of the switch entity
-   * @param {boolean} turnOn - Whether to turn the switch on or off
+   * Toggle an entity, group, or area in Home Assistant
+   * @param {string} domain - The domain, e.g. "light" or "switch"
+   * @param {string} targetKey - "entity_id", "area_id", or "device_id"
+   * @param {string} targetValue - The value for the target
+   * @param {boolean} turnOn - Whether to turn it on or off
    * @returns {Promise<Object>} - The response from the API
    */
-  async toggleSwitch(entityId, turnOn) {
+  async toggleSwitch(domain, targetKey, targetValue, turnOn) {
     const action = turnOn ? 'turn_on' : 'turn_off';
-    
+
     try {
-      const response = await fetch(`${this.baseUrl}services/switch/${action}`, {
+      const response = await fetch(`${this.baseUrl}services/${domain}/${action}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${this.token}`, // wichtig: Token mitschicken
         },
         body: JSON.stringify({
-          entity_id: entityId,
+          [targetKey]: targetValue,
         }),
       });
-      
+
       if (!response.ok) {
-        throw new Error(`Failed to toggle switch ${entityId}: ${response.status}`);
+        throw new Error(`Failed to toggle ${domain} ${targetValue}: ${response.status}`);
       }
-      
+
       return await response.json();
     } catch (error) {
-      console.error(`Error toggling switch ${entityId}:`, error);
+      console.error(`Error toggling ${domain} ${targetValue}:`, error);
       throw error;
     }
   }
+
 
   /**
    * Fetch multiple sensor states
