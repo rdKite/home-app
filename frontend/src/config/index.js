@@ -2,8 +2,8 @@
 
 // API URLs
 export const API_URLS = {
-  HOME_ASSISTANT: 'http://localhost:4000/ha/api/',
-  POCKETBASE: 'http://localhost:8090',
+  HOME_ASSISTANT: 'http://home.local:4000/ha/api/',
+  POCKETBASE: 'http://home.local:8090',
 };
 
 // Database constants
