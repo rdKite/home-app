@@ -27,3 +27,4 @@ dist-ssr
 *.env
 pocketbase/pb_data/*
 pocketbase/pb_public/*
+pihole/*
