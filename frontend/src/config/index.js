@@ -55,6 +55,7 @@ export const HOME_CONFIG = {
       sensors: {
         temperature: 'esp_01_temperature',
         humidity: 'esp_01_humidity',
+        co2: 'esp_01_co2_value',
       }
     },
     {
