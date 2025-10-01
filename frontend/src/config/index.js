@@ -84,7 +84,11 @@ export const HOME_CONFIG = {
           borders: [true, true, true, true],
         },
       ],
-      sensors: {}
+      sensors: {
+        temperature: 'esp_03_temperature',
+        humidity: 'esp_03_humidity',
+        co2: 'esp_03_co2_value',
+      }
     },
     {
       name: 'Balkon',
@@ -115,7 +119,10 @@ export const HOME_CONFIG = {
           borders: [true, true, true, true],
         },
       ],
-      sensors: {}
+      sensors: {
+        temperature: 'wifi_temperature_and_humidity_sensor_temperatur',
+        humidity: 'wifi_temperature_and_humidity_sensor_luftfeuchtigkeit',
+      }
     },
     {
       name: 'Toilette',
@@ -222,7 +229,7 @@ export const HOME_CONFIG = {
       type: "switch",
       icon: "lightbulb",
       position: {
-        x: 200,
+        x: 180,
         y: 650,
       },
       data: {
@@ -232,11 +239,25 @@ export const HOME_CONFIG = {
       }
     },
     {
+      name: "Ladegeräte Wohnzimmer",
+      type: "switch",
+      icon: "bolt",
+      position: {
+        x: 800,
+        y: 650,
+      },
+      data: {
+        domain: "switch",
+        type: "entity",
+        state: "switch.wiz_socket_f96ea5",
+      }
+    },
+    {
       name: "Prusa KM3.5 Büro",
       type: "switchWithLink",
       icon: "cube",
       position: {
-        x: 120,
+        x: 280,
         y: 650,
       },
       data: {
@@ -252,7 +273,7 @@ export const HOME_CONFIG = {
       icon: "lightbulb",
       position: {
         x: 140,
-        y: 430,
+        y: 330,
       },
       data: {
         domain: "light",
