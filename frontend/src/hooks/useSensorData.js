@@ -14,6 +14,7 @@ const useSensorData = (sensors, roomType = 'default', refreshInterval = 30000) =
     temperature: null,
     humidity: null,
     co2: null,
+    pressure: null,
   });
   
   const [warningStates, setWarningStates] = useState({

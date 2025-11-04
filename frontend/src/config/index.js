@@ -70,7 +70,10 @@ export const HOME_CONFIG = {
           borders: [true, true, true, true],
         },
       ],
-      sensors: {}
+      sensors: {
+        temperature: 'esp_04_temperature',
+        humidity: 'esp_04_humidity',
+      }
     },
     {
       name: 'Schlafzimmer',
@@ -192,7 +195,9 @@ export const HOME_CONFIG = {
           borders: [false, true, true, true],
         },
       ],
-      sensors: {}
+      sensors: {
+        pressure: 'esp_04_pressure',
+      }
     },
   ],
   actions: [

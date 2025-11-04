@@ -35,7 +35,7 @@ const Room = ({ roomData, aptData }) => {
       })}
 
       {/* Render sensor data display */}
-      {(sensorsData.temperature || sensorsData.humidity || sensorsData.co2) && (
+      {(sensorsData.temperature || sensorsData.humidity || sensorsData.co2 || sensorsData.pressure) && (
         <div
           className="absolute m-2 bg-black/60 text-white rounded p-2 shadow"
           style={getSensorDisplayPositionStyle(roomData.coordinates[0], aptData)}
@@ -63,6 +63,8 @@ const Room = ({ roomData, aptData }) => {
               {sensorsData.co2} ppm
             </p>
           )}
+
+          {sensorsData.pressure && <p>{sensorsData.pressure} hPa</p>}
         </div>
       )}
     </div>
