@@ -203,88 +203,148 @@ export const HOME_CONFIG = {
   actions: [
     {
       name: "Lichtschalter Wohnzimmer",
-      type: "switch",
       icon: "lightbulb",
       position: {
         x: 650,
         y: 600,
       },
-      data: {
-        domain: "light",
-        type: "area",
-        state: "light.wohnzimmer",
-      }
+      state: "light.wohnzimmer",
+      cases: [
+        {
+          name: "Toggle Light",
+          action: "toggle",
+          data: {
+            domain: "light",
+            type: "area",
+            state: "light.wohnzimmer",
+          }
+        }
+      ]
     },
     {
       name: "Lichtschalter Flur",
-      type: "switch",
       icon: "lightbulb",
       position: {
         x: 430,
         y: 250,
       },
-      data: {
-        domain: "switch",
-        type: "entity",
-        state: "switch.innr_steckdose_02_schalter",
-      }
+      state: "switch.innr_steckdose_02_schalter",
+      cases: [
+        {
+          name: "Toggle Light",
+          action: "toggle",
+          data: {
+            domain: "switch",
+            type: "entity",
+            state: "switch.innr_steckdose_02_schalter",
+          }
+        }
+      ]
     },
     {
       name: "Longneck Büro",
-      type: "switch",
       icon: "lightbulb",
       position: {
         x: 180,
         y: 650,
       },
-      data: {
-        domain: "switch",
-        type: "entity",
-        state: "switch.wiz_socket_73054a",
-      }
+      state: "switch.wiz_socket_73054a",
+      cases: [
+        {
+          name: "Toggle Light",
+          action: "toggle",
+          data: {
+            domain: "switch",
+            type: "entity",
+            state: "switch.wiz_socket_73054a",
+          }
+        }
+      ]
     },
     {
       name: "Ladegeräte Wohnzimmer",
-      type: "switch",
       icon: "bolt",
       position: {
         x: 800,
         y: 650,
       },
-      data: {
-        domain: "switch",
-        type: "entity",
-        state: "switch.wiz_socket_f96ea5",
-      }
+      state: "switch.wiz_socket_f96ea5",
+      cases: [
+        {
+          name: "Toggle Chargers",
+          action: "toggle",
+          data: {
+            domain: "switch",
+            type: "entity",
+            state: "switch.wiz_socket_f96ea5",
+          }
+        }
+      ]
     },
     {
       name: "Prusa KM3.5 Büro",
-      type: "switchWithLink",
       icon: "cube",
       position: {
         x: 280,
         y: 650,
       },
-      data: {
-        domain: "switch",
-        type: "entity",
-        state: "switch.innr_steckdose_01_schalter",
-        link: 'http://192.168.178.69/'
-      }
+      state: "switch.innr_steckdose_01_schalter",
+      cases: [
+        {
+          name: "Turn On",
+          action: "turnOn",
+          data: {
+            domain: "switch",
+            type: "entity",
+            state: "switch.innr_steckdose_01_schalter",
+          }
+        },
+        {
+          name: "Open Interface",
+          action: "openLink",
+          data: {
+            link: 'http://192.168.178.69/'
+          }
+        },
+        {
+          name: "Turn Off",
+          action: "turnOff",
+          data: {
+            domain: "switch",
+            type: "entity",
+            state: "switch.innr_steckdose_01_schalter",
+          }
+        }
+      ]
     },
     {
       name: "Lichtschalter Schlafzimmer",
-      type: "switch",
       icon: "lightbulb",
       position: {
         x: 140,
         y: 330,
       },
-      data: {
-        domain: "light",
-        type: "area",
-        state: "light.schlafzimmer",
-      }
+      state: "light.schlafzimmer",
+      cases: [
+        {
+          name: "Turn On",
+          action: "turnOn",
+          data: {
+            domain: "light",
+            type: "area",
+            state: "light.schlafzimmer",
+          }
+        },
+        {
+          name: "Turn Off",
+          action: "turnOff",
+          data: {
+            domain: "light",
+            type: "area",
+            state: "light.schlafzimmer",
+          }
+        }
+      ]
     },
   ]
 };
