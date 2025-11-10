@@ -354,6 +354,7 @@ export const HOME_CONFIG = {
         y: 140,
       },
       state: "vacuum.jurgen",
+      errorSensor: "binary_sensor.jurgen_behalter_voll",
       cases: [
         {
           name: "Starten",

@@ -1,8 +1,9 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {LightBulbIcon, CubeIcon, BoltIcon, CogIcon, ClockIcon} from "@heroicons/react/16/solid/index.js";
 import { getActionPositionStyle } from '../../utils/layoutUtils';
 import useSwitchState from '../../hooks/useSwitchState';
+import homeAssistantService from '../../services/homeAssistant';
 
 /**
  * Action component for displaying interactive elements with multiple possibilities
@@ -14,6 +15,7 @@ const Action = ({ actionData, aptData }) => {
   );
   
   const [showOverlay, setShowOverlay] = useState(false);
+  const [errorState, setErrorState] = useState(false);
   const longPressTimer = useRef(null);
   const longPressTriggered = useRef(false);
   
@@ -70,13 +72,42 @@ const Action = ({ actionData, aptData }) => {
   const closeOverlay = useCallback(() => {
     setShowOverlay(false);
   }, []);
+
+  // Fetch error sensor state if errorSensor is defined
+  useEffect(() => {
+    if (!actionData.errorSensor) return;
+
+    const fetchErrorState = async () => {
+      try {
+        const state = await homeAssistantService.getState(actionData.errorSensor);
+        setErrorState(state.state === 'on' || state.state === true);
+      } catch (error) {
+        console.error(`Failed to fetch error sensor state for ${actionData.errorSensor}:`, error);
+        setErrorState(false);
+      }
+    };
+
+    // Initial fetch
+    fetchErrorState();
+
+    // Set up polling for error sensor state
+    const interval = setInterval(fetchErrorState, 5000); // Poll every 5 seconds
+
+    return () => clearInterval(interval);
+  }, [actionData.errorSensor]);
   
+  // Determine border and background colors based on state
+  const getBorderAndBackgroundClasses = () => {
+    if (errorState) {
+      return 'bg-red-500 border-red-200';
+    }
+    return switchState ? 'bg-yellow-400 border-yellow-100' : 'bg-gray-500 border-gray-200';
+  };
+
   return (
     <>
       <div
-        className={`absolute rounded-full w-10 h-10 border-3 transition-colors duration-300 ${
-          switchState ? 'bg-yellow-400 border-yellow-100' : 'bg-gray-500 border-gray-200'
-        }`}
+        className={`absolute rounded-full w-10 h-10 border-3 transition-colors duration-300 ${getBorderAndBackgroundClasses()}`}
         style={getActionPositionStyle(actionData.position, aptData)}
       >
         <button
@@ -90,7 +121,7 @@ const Action = ({ actionData, aptData }) => {
         >
           <Icon
             className={`w-7 h-7 cursor-pointer ${
-              switchState ? "text-yellow-100" : "text-gray-200"
+              errorState ? "text-red-100" : switchState ? "text-yellow-100" : "text-gray-200"
             }`}
           />
         </button>
@@ -142,6 +173,7 @@ Action.propTypes = {
       y: PropTypes.number.isRequired,
     }).isRequired,
     state: PropTypes.string.isRequired,
+    errorSensor: PropTypes.string,
     cases: PropTypes.arrayOf(
       PropTypes.shape({
         name: PropTypes.string.isRequired,
