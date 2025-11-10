@@ -24,7 +24,15 @@ const useSwitchState = (stateEntityId, cases = [], refreshInterval = 10000) => {
       setError(null);
       
       const data = await homeAssistantService.getState(stateEntityId);
-      setSwitchState(data.state !== 'off');
+      
+      // Special handling for vacuum entities
+      if (stateEntityId.startsWith('vacuum.')) {
+        // For vacuum: false if "docked", true if not docked
+        setSwitchState(data.state !== 'docked');
+      } else {
+        // Default behavior for other entities
+        setSwitchState(data.state !== 'off');
+      }
       
       setLoading(false);
     } catch (err) {
@@ -95,6 +103,15 @@ const useSwitchState = (stateEntityId, cases = [], refreshInterval = 10000) => {
           if (link) {
             window.open(link, '_blank');
           }
+          break;
+        }
+        
+        case 'script': {
+          const { domain, state } = actionCase.data;
+          const scriptName = state.split('.')[1]; // Extract script name from "script.script_name"
+          await homeAssistantService.callScript(scriptName);
+          // Refresh state after script execution to get updated vacuum state
+          setTimeout(() => fetchSwitchState(), 1000);
           break;
         }
         

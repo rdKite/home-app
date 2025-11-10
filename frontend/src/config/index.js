@@ -346,6 +346,55 @@ export const HOME_CONFIG = {
         }
       ]
     },
+    {
+      name: "Staubsauger Jürgen",
+      icon: "vacuum",
+      position: {
+        x: 480,
+        y: 140,
+      },
+      state: "vacuum.jurgen",
+      cases: [
+        {
+          name: "Starten",
+          action: "script",
+          data: {
+            domain: "script",
+            type: "entity",
+            state: "script.jurgen_starten",
+          }
+        },
+        {
+          name: "Beenden",
+          action: "script",
+          data: {
+            domain: "script",
+            type: "entity",
+            state: "script.jurgen_beenden",
+          }
+        }
+      ]
+    },
+    {
+      name: "Aufstehen Wecker",
+      icon: "clock",
+      position: {
+        x: 230,
+        y: 550,
+      },
+      state: "automation.aufstehen_wecker",
+      cases: [
+        {
+          name: "Toggle Automation",
+          action: "toggle",
+          data: {
+            domain: "automation",
+            type: "entity",
+            state: "automation.aufstehen_wecker",
+          }
+        }
+      ]
+    },
   ]
 };
 

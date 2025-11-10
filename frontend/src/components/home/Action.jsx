@@ -1,6 +1,6 @@
 import React, { useState, useRef, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import {LightBulbIcon, CubeIcon, BoltIcon} from "@heroicons/react/16/solid/index.js";
+import {LightBulbIcon, CubeIcon, BoltIcon, CogIcon, ClockIcon} from "@heroicons/react/16/solid/index.js";
 import { getActionPositionStyle } from '../../utils/layoutUtils';
 import useSwitchState from '../../hooks/useSwitchState';
 
@@ -22,6 +22,8 @@ const Action = ({ actionData, aptData }) => {
     cube: CubeIcon,
     lightbulb: LightBulbIcon,
     bolt: BoltIcon,
+    vacuum: CogIcon,
+    clock: ClockIcon,
   };
   
   // Get the icon component based on the action data
@@ -143,7 +145,7 @@ Action.propTypes = {
     cases: PropTypes.arrayOf(
       PropTypes.shape({
         name: PropTypes.string.isRequired,
-        action: PropTypes.oneOf(['toggle', 'turnOn', 'turnOff', 'openLink']).isRequired,
+        action: PropTypes.oneOf(['toggle', 'turnOn', 'turnOff', 'openLink', 'script']).isRequired,
         data: PropTypes.object.isRequired,
       })
     ).isRequired,

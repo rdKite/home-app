@@ -37,6 +37,33 @@ class HomeAssistantService {
   }
 
   /**
+   * Call a Home Assistant script
+   * @param {string} scriptName - The name of the script to call
+   * @returns {Promise<Object>} - The response from the API
+   */
+  async callScript(scriptName) {
+    try {
+      const response = await fetch(`${this.baseUrl}services/script/${scriptName}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${this.token}`,
+        },
+        body: JSON.stringify({}),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to call script ${scriptName}: ${response.status}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error(`Error calling script ${scriptName}:`, error);
+      throw error;
+    }
+  }
+
+  /**
    * Toggle an entity, group, or area in Home Assistant
    * @param {string} domain - The domain, e.g. "light" or "switch"
    * @param {string} targetKey - "entity_id", "area_id", or "device_id"
